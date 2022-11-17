@@ -1,0 +1,58 @@
+I miss 2015 twitter! Maybe you do too. Feel free to recreate the experience of sending out your funniest joke to the world with this RSS feed viewer and Twitter simulator.
+
+Your HTML file should contain both of these lines. If you don't know what to do with them, goof off a little more in HTML and come back later.
+	<script src="microblog.js"></script> 
+    <body onload="retrieveXML()">
+
+XML/RSS file tag requirements:
+channel
+    title
+    link
+    description
+    webMaster (optional)
+    generator (optional)
+
+    image
+        url
+        title
+        link
+    
+    item
+        guid
+        title
+        pubDate
+        link
+        description
+
+These fit the minimum RSS requirements so this should be RSS reader readable.
+
+The webmaster tag is your name. The generator tag is your username. Feel free to add your @ and verified checkmark to this one. It won't break the code if you leave either or both out (I hope).
+
+The image tag is your profile picture. I'm using a direct link instead of a relative link but I have no idea if it makes a difference to RSS readers.
+
+Your first post goes at the bottom and should be 0 if you choose to link it. The latest post is at the top with the highest post number. I'm not sure yet if you delete a post that it may break everything.
+
+The anchor in the link in <link> should match the GUID (starting at 0).
+
+The item title is your post. Keep it under 140 characters!
+
+The (misused) item description tag is your included image(s). Use an HTML <img /> tag. This is optional and multiple images are supported. Leave the tag empty if you do not want to include any images with your post.
+
+Config settings:
+
+DisplayLatestPosts
+    Choose the number of posts displayed on the page. Set to 0 for all posts.
+RSSLink
+    The link to your RSS feed
+DisplaySubscribe
+    Set to 1 if you want an RSS link element on your page, set to 0 to not show.
+SubscribeText
+    Choose a string to display as your subscribe button
+DisplayLikes
+    Set to 1 to show a useless like button! Not yet implemented.
+LikeSymbol and UnlikeSymbol
+    Choose a string to display as the like and unlike buttons
+DisplayReblog
+    Set to 1 to show a useless reblog button!
+ReblogSymbol and NoReblogSymbol
+    Choose a string to display as the reblog and not reblogged buttons
