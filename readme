@@ -1,4 +1,14 @@
-I miss 2015 twitter! Maybe you do too. Feel free to recreate the experience of sending out your funniest joke to the world with this RSS feed viewer and Twitter simulator.
+RSS microblog script by Frannus Hattus
+Written: November 12, 2022
+Last updated: November 16, 2022
+
+I am very nostalgic for 2012-2015 anime twitter. Feel free to recreate the experience of sending out your funniest or dumbest joke to the world with this RSS feed viewer and Twitter simulator.
+
+Under the FranHat license, you are free to use this for personal use! Feel free to reference or use my CSS, index, and RSS file. Steal my identity if you want! But please don't monetize this. I'm not making money off this either!
+
+Need a handle and bio?
+https://en.shindanmaker.com/777701
+https://en.shindanmaker.com/700527
 
 Your HTML file should contain both of these lines. If you don't know what to do with them, goof off a little more in HTML and come back later.
 	<script src="microblog.js"></script> 
@@ -39,6 +49,7 @@ The item title is your post. Keep it under 140 characters!
 The (misused) item description tag is your included image(s). Use an HTML <img /> tag. This is optional and multiple images are supported. Leave the tag empty if you do not want to include any images with your post.
 
 Config settings:
+By setting these globals in your page header using <script>, you can override the defaults.
 
 DisplayLatestPosts
     Choose the number of posts displayed on the page. Set to 0 for all posts.
