@@ -1,6 +1,6 @@
 RSS microblog script by Frannus Hattus
 Written: November 12, 2022
-Last updated: November 16, 2022
+Last updated: November 17, 2022
 
 I am very nostalgic for 2012-2015 anime twitter. Feel free to recreate the experience of sending out your funniest or dumbest joke to the world with this RSS feed viewer and Twitter simulator.
 
@@ -53,6 +53,8 @@ By setting these globals in your page header using <script>, you can override th
 
 DisplayLatestPosts
     Choose the number of posts displayed on the page. Set to 0 for all posts.
+MicroblogDivID
+    If you choose to provide a div ID, your content will be placed in that div. If not, a div named "container" will be provided for you and appended to the end of the body.
 RSSLink
     The link to your RSS feed
 DisplaySubscribe

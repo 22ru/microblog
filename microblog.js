@@ -1,6 +1,14 @@
+// Fran Hat RSS microblog script
+// Inspired by ひなちゃま
+// Written: November 12, 2022
+// Last edited: November 17, 2022
+// https://github.com/22ru/microblog
+// Enjoy!
+
 // Config
 var DisplayLatestPosts = 0;
 var RSSLink = "microblog.xml";
+var MicroblogDivID = "";
 var DisplaySubscribe = 1;
 var SubscribeText = "Follow";
 var DisplayLikes = 1;
@@ -10,7 +18,14 @@ var DisplayReblog = 1;
 var ReblogSymbol = "♻️";
 var NoReblogSymbol = "♼";
 
+
+// I hate to do this with a global
+// but I don't have any better ideas right now.
+// Where's "static"???
+var firstLoad = 1;
+
 // stolen shamelessly from w3schools
+// https://www.w3schools.com/xml/xml_parser.asp
 function retrieveXML() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -25,51 +40,44 @@ function retrieveXML() {
 function buildPage(xml) {
   var xmlDoc;
   var authorName, username, iconLink, rootLink, bioText;
-  var anchor, i;
   var container;
-  var postsDisplayed;
-  var items;
-    
+  var posts, i, postCount;
+  
   xmlDoc = xml.responseXML;
-
   authorName = xmlDoc.getElementsByTagName("webMaster")[0].innerHTML;
   username = xmlDoc.getElementsByTagName("generator")[0].innerHTML;
   iconLink = xmlDoc.getElementsByTagName("image")[0].getElementsByTagName("url")[0].innerHTML;
   rootLink = xmlDoc.getElementsByTagName("link")[0].innerHTML;
-  bioText = xmlDoc.getElementsByTagName("description")[0].innerHTML;
-  
-  container = document.createElement("div");
-  container.id = "container";
-  document.body.appendChild(container);
-    
-  loadHeader(xmlDoc, authorName, username, iconLink, rootLink, bioText);
-    
-  if (DisplaySubscribe) loadSubscribe(RSSLink);
-    
-  items = xmlDoc.getElementsByTagName("item");
 
-  // Check anchor
-  anchor = window.location.hash.replace("#", '');
-
-  // no anchor or invalid anchor, build feed
-  if (anchor == "" || isNaN(anchor)) {
-    if (DisplayLatestPosts > 0) { 
-      postsDisplayed = DisplayLatestPosts;
-    } else {
-      postsDisplayed = items.length;
-    }
-    for (i = 0; i < postsDisplayed; i++) {
-      loadSingle(items[i], authorName, username, iconLink, rootLink);
-    }
-  // load single post
-  } else {
-    for (i = 0; i < items.length; i++) {
-      if (anchor == items[i].getElementsByTagName("guid")[0].innerHTML) {
-        loadSingle(items[i], authorName, username, iconLink, rootLink);
-        return;
+  // Initialize page on first load
+  // Header and subscribe button will not be removed
+  // when anchor is changed.
+  if (firstLoad == 1) {
+    // Event listener to reload page when anchor/hash is changed
+    window.addEventListener('hashchange', function() {
+      firstLoad = 0;
+      posts = document.getElementsByClassName("post");
+      postCount = posts.length;
+      for (i = 0; i < postCount; i++) {
+        document.getElementById(MicroblogDivID).removeChild(posts[0]);
       }
+      loadPosts(xmlDoc, authorName, username, iconLink, rootLink);
+    }, false);
+  
+    bioText = xmlDoc.getElementsByTagName("description")[0].innerHTML;
+    
+    // Create container if ID not supplied
+    if (MicroblogDivID.length == 0) {
+      MicroblogDivID = "container";
+      container = document.createElement("div");
+      container.id = MicroblogDivID;
+      document.body.appendChild(container);
     }
+      
+    loadHeader(xmlDoc, authorName, username, iconLink, rootLink, bioText);
+    if (DisplaySubscribe) loadSubscribe(RSSLink);
   }
+  loadPosts(xmlDoc, authorName, username, iconLink, rootLink);
 }
 
 function loadHeader(xmlDoc, authorName, username, iconLink, rootLink, bioText) {
@@ -97,8 +105,8 @@ function loadHeader(xmlDoc, authorName, username, iconLink, rootLink, bioText) {
   header.appendChild(author);
   header.appendChild(user);
   header.appendChild(bio);
-    
-  document.getElementById("container").appendChild(header);
+  
+  document.getElementById(MicroblogDivID).appendChild(header); 
 }
 
 function loadSubscribe(RSSLink) {
@@ -112,7 +120,36 @@ function loadSubscribe(RSSLink) {
   subLink.className = "subscribeButton";
   subButton.appendChild(subLink);
   
-  document.getElementById("container").appendChild(subLink);
+  document.getElementById(MicroblogDivID).appendChild(subLink); 
+}
+
+function loadPosts(xmlDoc, authorName, username, iconLink, rootLink) {
+  var anchor, i;
+  var postsDisplayed;
+  var items;
+  
+  items = xmlDoc.getElementsByTagName("item");
+  anchor = window.location.hash.replace("#", '');
+
+  // No anchor or invalid anchor, build feed
+  if (anchor == "" || isNaN(anchor)) {
+    if (DisplayLatestPosts > 0) { 
+      postsDisplayed = DisplayLatestPosts;
+    } else {
+      postsDisplayed = items.length;
+    }
+    for (i = 0; i < postsDisplayed; i++) {
+      loadSingle(items[i], authorName, username, iconLink, rootLink);
+    }
+  // Load single post with guid matching the anchor
+  } else {
+    for (i = 0; i < items.length; i++) {
+      if (anchor == items[i].getElementsByTagName("guid")[0].innerHTML) {
+        loadSingle(items[i], authorName, username, iconLink, rootLink);
+        return;
+      }
+    }
+  }
 }
 
 function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
@@ -148,7 +185,7 @@ function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   dateLink.href = "#" + rssItem.getElementsByTagName("guid")[0].innerHTML;
   dateLink.className = "postDate";
   dateLink.innerHTML = rssItem.getElementsByTagName("pubDate")[0].innerHTML;
-  dateLink.setAttribute("onclick","document.body.innerHTML = ''; retrieveXML();");
+  //dateLink.setAttribute("onclick","document.body.innerHTML = ''; retrieveXML();");
   
   authorDate.appendChild(author);
   authorDate.appendChild(dateLink);
@@ -176,7 +213,8 @@ function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   }
   
   post.appendChild(content);
-  document.getElementById("container").appendChild(post);
+  
+  document.getElementById(MicroblogDivID).appendChild(post); 
 }
 
 function loadInteractions(guid) {
@@ -245,3 +283,4 @@ function unreblogPost(guid) {
   post.getElementsByClassName("reblogButton")[0].innerHTML = NoReblogSymbol;
   post.getElementsByClassName("reblogCount")[0].innerHTML = "0";
 }
+
