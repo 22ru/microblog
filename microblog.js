@@ -154,7 +154,7 @@ function loadPosts(xmlDoc, authorName, username, iconLink, rootLink) {
 
 function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   var post, authorLink, icon, content, authorDate, author, dateLink, text, imageLink;
-  var imagesPreCount, i, images, dateStr;
+  var imagesPreCount, i, images, postDate;
     
   post = document.createElement("div");
   post.className = "post";
@@ -188,9 +188,10 @@ function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   // It's optional to use a correctly formatted date, but your RSS reader
   // will thank you if you do. You can use "new Date()" in the console to 
   // generate the current date and time in the correct format.
-  dateStr = new Date(rssItem.getElementsByTagName("pubDate")[0].innerHTML);
-  if (dateStr != NaN) {
-    dateLink.innerHTML = dateStr.toLocaleDateString();
+  postDate = new Date(rssItem.getElementsByTagName("pubDate")[0].innerHTML);
+  if (postDate != NaN) {
+    dateLink.innerHTML = postDate.toLocaleDateString();
+    dateLink.title = postDate;
   } else {
     dateLink.innerHTML = rssItem.getElementsByTagName("pubDate")[0].innerHTML;
   }
