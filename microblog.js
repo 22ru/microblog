@@ -1,7 +1,7 @@
 // Fran Hat RSS microblog script
 // Inspired by ひなちゃま
 // Written: November 12, 2022
-// Last edited: November 17, 2022
+// Last edited: January 11, 2023
 // https://github.com/22ru/microblog
 // Enjoy!
 
@@ -154,7 +154,7 @@ function loadPosts(xmlDoc, authorName, username, iconLink, rootLink) {
 
 function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   var post, authorLink, icon, content, authorDate, author, dateLink, text, imageLink;
-  var imagesPrecount, i, images;
+  var imagesPreCount, i, images, dateStr;
     
   post = document.createElement("div");
   post.className = "post";
@@ -184,9 +184,17 @@ function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   dateLink = document.createElement("a");
   dateLink.href = "#" + rssItem.getElementsByTagName("guid")[0].innerHTML;
   dateLink.className = "postDate";
-  dateLink.innerHTML = rssItem.getElementsByTagName("pubDate")[0].innerHTML;
-  //dateLink.setAttribute("onclick","document.body.innerHTML = ''; retrieveXML();");
-  
+
+  // It's optional to use a correctly formatted date, but your RSS reader
+  // will thank you if you do. You can use "new Date()" in the console to 
+  // generate the current date and time in the correct format.
+  dateStr = new Date(rssItem.getElementsByTagName("pubDate")[0].innerHTML);
+  if (dateStr != NaN) {
+    dateLink.innerHTML = dateStr.toLocaleDateString();
+  } else {
+    dateLink.innerHTML = rssItem.getElementsByTagName("pubDate")[0].innerHTML;
+  }
+
   authorDate.appendChild(author);
   authorDate.appendChild(dateLink);
   content.appendChild(authorDate);
