@@ -185,9 +185,6 @@ function loadSingle(rssItem, authorName, username, iconLink, rootLink) {
   dateLink.href = "#" + rssItem.getElementsByTagName("guid")[0].innerHTML;
   dateLink.className = "postDate";
 
-  // It's optional to use a correctly formatted date, but your RSS reader
-  // will thank you if you do. You can use "new Date()" in the console to 
-  // generate the current date and time in the correct format.
   postDate = new Date(rssItem.getElementsByTagName("pubDate")[0].innerHTML);
   if (postDate != NaN) {
     dateLink.innerHTML = postDate.toLocaleDateString();

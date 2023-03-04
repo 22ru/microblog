@@ -42,7 +42,7 @@ The image tag is your profile picture. I'm using a direct link instead of a rela
 
 Your first post goes at the bottom and should be 0 if you choose to link it. The latest post is at the top with the highest post number. I'm not sure yet if you delete a post that it may break everything.
 
-The pubDate tag is the date of course! You can use any string, but RSS readers like correctly formatted dates best. Generate one by typing "new Date()" in the console. Wolfram Alpha will also generate one for you if you use the keyword "epoch time" or "unix time".
+The pubDate tag is the date of course! You can use any string, but RSS readers like correctly formatted dates best. Generate one by typing "new Date().toUTCString()" in the console.
 
 The anchor in the link in <link> should match the GUID (starting at 0).
 
