@@ -40,15 +40,15 @@ The webmaster tag is your name. The generator tag is your username. Feel free to
 
 The image tag is your profile picture. I'm using a direct link instead of a relative link but I have no idea if it makes a difference to RSS readers.
 
-Your first post goes at the bottom and should be 0 if you choose to link it. The latest post is at the top with the highest post number. I'm not sure yet if you delete a post that it may break everything.
+The GUID is the post number. If you want your feed to be closer to validation, use <guid isPermaLink="false">example</guid>. Your first post goes at the bottom and should be 0 if you choose to link it. The latest post is at the top with the highest post number. I'm not sure yet if you delete a post that it may break everything.
 
-The pubDate tag is the date of course! You can use any string, but RSS readers like correctly formatted dates best. Generate one by typing "new Date().toUTCString()" in the console.
+The pubDate tag is the date of course! You can use any string, but RSS readers like correctly formatted dates best. Generate one by typing "new Date().toUTCString()" in the console. Check out https://validator.w3.org/feed/docs/warning/ProblematicalRFC822Date.html for more information. I personally use GMT because it gives me the least errors between picky RSS readers. RSS readers are really hit and miss on this part.
 
-The anchor in the link in <link> should match the GUID (starting at 0).
+The anchor in the link in <link> should match the GUID (starting at 0). Some readers can handle relative links, some can't.
 
-The item title is your post. Keep it under 140 characters!
+The item title is your post. Keep it under 140 characters! RSS readers will generally not be able to parse any tags contained in title. 
 
-The (misused) item description tag is your included image(s). Use an HTML <img /> tag. This is optional and multiple images are supported. Leave the tag empty if you do not want to include any images with your post.
+The (misused) item description tag is your included image(s). Use an HTML <img /> tag. This is optional and multiple images are supported. Leave the tag empty if you do not want to include any images with your post. You can also add more tags, like <p></p> here too.
 
 Config settings:
 By setting these globals in your page header using <script>, you can override the defaults.
